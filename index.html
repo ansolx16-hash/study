@@ -1,0 +1,2318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Vault — The Knowledge Archive</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        /* ============================================================
+   STUDY VAULT — Refined Editorial Knowledge Archive v2
+   ============================================================ */
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: initial;
+        }
+
+        :root {
+            --bg: #F4F0E6;
+            --ink: #18181B;
+            --ink-80: rgba(24, 24, 27, 0.80);
+            --ink-60: rgba(24, 24, 27, 0.60);
+            --ink-40: rgba(24, 24, 27, 0.40);
+            --ink-20: rgba(24, 24, 27, 0.20);
+            --ink-08: rgba(24, 24, 27, 0.08);
+            --accent: #1A6EFF;
+            --accent-soft: rgba(26, 110, 255, 0.10);
+            --card-bg: #EDE9DE;
+            --serif: 'Playfair Display', Georgia, serif;
+            --sans: 'Inter', system-ui, sans-serif;
+        }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--ink);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.6;
+            cursor: none;
+        }
+
+        /* Custom cursor */
+        #cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 10px;
+            height: 10px;
+            background: var(--ink);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99999;
+            transform: translate(-50%, -50%);
+            transition: width 0.25s, height 0.25s, background 0.25s, opacity 0.25s;
+            mix-blend-mode: multiply;
+        }
+
+        #cursor-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(26, 110, 255, 0.05) 0%, transparent 70%);
+            transition: opacity 0.4s;
+        }
+
+        body:hover #cursor-glow {
+            opacity: 1;
+        }
+
+        body.hovering-link #cursor {
+            width: 32px;
+            height: 32px;
+            background: var(--accent);
+            opacity: 0.7;
+        }
+
+        body.hovering-card #cursor {
+            width: 20px;
+            height: 20px;
+            background: var(--ink);
+            opacity: 0.5;
+        }
+
+        ::selection {
+            background: rgba(26, 110, 255, 0.15);
+            color: var(--ink);
+        }
+
+        ::-webkit-scrollbar {
+            width: 2px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--ink-20);
+            border-radius: 2px;
+        }
+
+        /* Smooth scroll */
+        html.lenis {
+            height: auto;
+        }
+
+        .lenis.lenis-smooth {
+            scroll-behavior: auto;
+        }
+
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
+
+        /* ── Grid texture ── */
+        .grid-texture {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(var(--ink-08) 1px, transparent 1px),
+                linear-gradient(90deg, var(--ink-08) 1px, transparent 1px);
+            background-size: 64px 64px;
+            opacity: 0.4;
+        }
+
+        /* ── Nav ── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 24px 52px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(180deg, rgba(244, 240, 230, 0.96) 0%, transparent 100%);
+            backdrop-filter: blur(0px);
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .nav-logo {
+            font-family: var(--serif);
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--ink);
+            text-decoration: none;
+            letter-spacing: -0.3px;
+        }
+
+        .nav-logo em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--ink-40);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--ink-60);
+            text-decoration: none;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 2px;
+            transition: color 0.4s;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 100%;
+            height: 1px;
+            background: var(--accent);
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-link:hover {
+            color: var(--ink);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            right: 0;
+        }
+
+        .nav-link.active {
+            color: var(--ink);
+        }
+
+        .nav-chat-btn {
+            padding: 8px 20px;
+            background: var(--ink);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 40px;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .nav-chat-btn:hover {
+            background: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .nav-email {
+            font-size: 11px;
+            color: var(--ink-50);
+        }
+
+        /* ── Hero ── */
+        #hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            padding: 160px 52px 100px;
+        }
+
+        .hero-inner {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-label {
+            font-size: 10px;
+            letter-spacing: 3.5px;
+            text-transform: uppercase;
+            color: var(--ink-60);
+            margin-bottom: 44px;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .hero-label span {
+            display: inline-block;
+            width: 20px;
+            height: 1px;
+            background: var(--ink-40);
+            margin: 0 12px;
+            vertical-align: middle;
+        }
+
+        .hero-title {
+            font-family: var(--serif);
+            font-size: clamp(72px, 13vw, 168px);
+            font-weight: 700;
+            line-height: 0.86;
+            color: var(--ink);
+            letter-spacing: -4px;
+        }
+
+        .hero-title .line-wrap {
+            overflow: hidden;
+            display: block;
+        }
+
+        .hero-title .line {
+            display: block;
+            transform: translateY(100%);
+        }
+
+        .hero-title .line-light {
+            font-weight: 400;
+            font-style: italic;
+            color: var(--ink-40);
+            letter-spacing: -2px;
+        }
+
+        .hero-sub {
+            font-size: clamp(11px, 1vw, 14px);
+            color: var(--ink-60);
+            font-weight: 500;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-top: 36px;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .hero-divider {
+            width: 1px;
+            height: 48px;
+            background: var(--ink-30);
+            margin: 44px auto 0;
+            opacity: 0;
+        }
+
+        .hero-stateline {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            margin-top: 32px;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .hero-stateline-item {
+            font-size: 11px;
+            color: var(--ink-60);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+
+        .hero-stateline-item strong {
+            font-weight: 700;
+            color: var(--ink-80);
+        }
+
+        .hero-stateline-div {
+            width: 1px;
+            height: 14px;
+            background: var(--ink-30);
+            align-self: center;
+        }
+
+        /* ── Studytron Hero CTA ── */
+        .hero-cta-wrap {
+            margin-top: 52px;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 32px;
+            background: var(--ink);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 40px;
+            transition: background 0.35s, transform 0.35s, box-shadow 0.35s;
+            box-shadow: 0 4px 20px rgba(24, 24, 27, 0.12);
+        }
+
+        .hero-cta:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(26, 110, 255, 0.25);
+        }
+
+        .hero-cta .dot {
+            width: 7px;
+            height: 7px;
+            background: #5DF5A5;
+            border-radius: 50%;
+            animation: pulse 2s ease infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.6;
+                transform: scale(0.8);
+            }
+        }
+
+        /* ── Scroll indicator ── */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 44px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .scroll-indicator span {
+            font-size: 8px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--ink-50);
+            font-weight: 500;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 28px;
+            background: linear-gradient(to bottom, var(--ink-40), transparent);
+            animation: scrollPulse 3s ease infinite;
+        }
+
+        @keyframes scrollPulse {
+
+            0%,
+            100% {
+                transform: scaleY(1);
+                opacity: 0.4;
+            }
+
+            50% {
+                transform: scaleY(1.5);
+                opacity: 1;
+            }
+        }
+
+        /* ── Story image blocks ── */
+        .story-section {
+            position: relative;
+            z-index: 2;
+            padding: 0 52px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .story-image-block {
+            position: relative;
+            width: 100%;
+            height: 78vh;
+            min-height: 480px;
+            max-height: 680px;
+            overflow: hidden;
+            margin-bottom: 80px;
+            border-radius: 4px;
+        }
+
+        .story-image-block img {
+            width: 100%;
+            height: 120%;
+            object-fit: cover;
+            object-position: center;
+            will-change: transform;
+            opacity: 0;
+        }
+
+        .image-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(244, 240, 230, 0.25) 0%, transparent 18%, transparent 82%, rgba(244, 240, 230, 0.25) 100%);
+            pointer-events: none;
+        }
+
+        .image-caption {
+            position: absolute;
+            bottom: 24px;
+            left: 28px;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.55);
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+
+        /* ── Editorial content ── */
+        .editorial-content {
+            max-width: 680px;
+            margin: 0 auto 110px;
+            padding: 0 24px;
+        }
+
+        .editorial-content .section-number {
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--ink-50);
+            margin-bottom: 18px;
+            font-weight: 500;
+        }
+
+        .editorial-content h2 {
+            font-family: var(--serif);
+            font-size: clamp(36px, 5vw, 62px);
+            font-weight: 700;
+            line-height: 1.05;
+            color: var(--ink);
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+
+        .editorial-content h2 .light {
+            font-weight: 400;
+            font-style: italic;
+            color: var(--ink-30);
+        }
+
+        .editorial-content p {
+            font-size: 16px;
+            line-height: 1.82;
+            color: var(--ink-70);
+            font-weight: 300;
+            margin-bottom: 18px;
+        }
+
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--ink-60);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+            margin-top: 6px;
+        }
+
+        .read-more:hover {
+            color: var(--accent);
+        }
+
+        .read-more .arrow {
+            transition: transform 0.35s;
+        }
+
+        .read-more:hover .arrow {
+            transform: translateX(5px);
+        }
+
+        /* ── Archive ── */
+        #archive {
+            position: relative;
+            z-index: 2;
+            padding: 120px 52px 160px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .archive-header {
+            margin-bottom: 72px;
+            max-width: 560px;
+        }
+
+        .archive-header .label {
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--ink-50);
+            margin-bottom: 14px;
+            font-weight: 500;
+        }
+
+        .archive-header h2 {
+            font-family: var(--serif);
+            font-size: clamp(40px, 5.5vw, 72px);
+            font-weight: 700;
+            line-height: 1.0;
+            color: var(--ink);
+            letter-spacing: -2px;
+            margin-bottom: 16px;
+        }
+
+        .archive-header h2 .italic {
+            font-weight: 400;
+            font-style: italic;
+            color: var(--ink-30);
+        }
+
+        .archive-header .desc {
+            font-size: 15px;
+            line-height: 1.75;
+            color: var(--ink-65);
+            font-weight: 300;
+        }
+
+        /* ── Tabs ── */
+        .archive-controls {
+            display: flex;
+            gap: 0;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--ink-12);
+            flex-wrap: wrap;
+        }
+
+        .archive-tab {
+            padding: 11px 22px;
+            font-size: 11px;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--ink-45);
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: color 0.35s;
+            font-weight: 500;
+            font-family: var(--sans);
+            position: relative;
+        }
+
+        .archive-tab:hover {
+            color: var(--ink-70);
+        }
+
+        .archive-tab.active {
+            color: var(--ink);
+        }
+
+        .archive-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 22px;
+            right: 22px;
+            height: 1.5px;
+            background: var(--ink);
+        }
+
+        /* ── Cards grid ── */
+        .archive-grid {
+            display: none;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 1px;
+            background: var(--ink-08);
+        }
+
+        .archive-grid.active {
+            display: grid;
+        }
+
+        .guide-card {
+            padding: 32px 28px;
+            background: var(--card-bg);
+            position: relative;
+            transition: background 0.4s;
+            cursor: default;
+            overflow: hidden;
+        }
+
+        .guide-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(26, 110, 255, 0);
+            transition: background 0.4s;
+            pointer-events: none;
+        }
+
+        .guide-card:hover::before {
+            background: rgba(26, 110, 255, 0.02);
+        }
+
+        .guide-card-icon {
+            font-size: 18px;
+            margin-bottom: 14px;
+            opacity: 0.5;
+        }
+
+        .guide-card-title {
+            font-family: var(--serif);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.25;
+            margin-bottom: 7px;
+            letter-spacing: -0.3px;
+        }
+
+        .guide-card-desc {
+            font-size: 13px;
+            line-height: 1.65;
+            color: var(--ink-60);
+            font-weight: 400;
+            margin-bottom: 14px;
+        }
+
+        .guide-card-tags {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .guide-tag {
+            padding: 3px 9px;
+            font-size: 8px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--ink-55);
+            background: var(--ink-08);
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        .guide-card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 14px;
+            border-top: 1px solid var(--ink-08);
+        }
+
+        .guide-date {
+            font-size: 9px;
+            color: var(--ink-40);
+            letter-spacing: 0.5px;
+        }
+
+        .guide-actions {
+            display: flex;
+            gap: 2px;
+        }
+
+        .guide-action-btn {
+            padding: 5px 11px;
+            font-size: 9px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            border: none;
+            background: none;
+            color: var(--ink-45);
+            cursor: pointer;
+            transition: color 0.3s, background 0.3s;
+            font-family: var(--sans);
+            font-weight: 500;
+            border-radius: 3px;
+        }
+
+        .guide-action-btn:hover {
+            background: var(--ink-08);
+            color: var(--ink);
+        }
+
+        .guide-action-btn.open-btn {
+            color: var(--ink-60);
+        }
+
+        .guide-action-btn.open-btn:hover {
+            color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        .guide-action-btn.remove-btn:hover {
+            color: #D04040;
+            background: rgba(208, 64, 64, 0.08);
+        }
+
+        .guide-file-status {
+            font-size: 9px;
+            color: var(--ink-35);
+            letter-spacing: 0.5px;
+            margin-top: 8px;
+        }
+
+        .guide-file-status.has-file {
+            color: rgba(26, 110, 255, 0.55);
+        }
+
+        .guide-format-badges {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+
+        .guide-format-badge {
+            display: inline-block;
+            padding: 2px 7px;
+            font-size: 8px;
+            font-weight: 600;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            border-radius: 3px;
+            font-family: var(--sans);
+        }
+
+        .guide-format-badge.available {
+            background: rgba(26, 110, 255, 0.12);
+            color: var(--accent);
+        }
+
+        .guide-format-badge.missing {
+            background: var(--ink-08);
+            color: var(--ink-35);
+        }
+
+        /* ── Format Picker Modal ── */
+        .format-picker {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0 8px;
+        }
+
+        .format-picker-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--ink-12);
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--sans);
+            font-size: 13px;
+            color: var(--ink);
+            transition: border-color 0.25s, background 0.25s;
+            text-decoration: none;
+        }
+
+        .format-picker-btn:hover {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        .format-picker-btn .format-label {
+            font-weight: 500;
+        }
+
+        .format-picker-btn .format-ext {
+            font-size: 10px;
+            color: var(--ink-45);
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .format-picker-btn .format-arrow {
+            color: var(--accent);
+            font-size: 16px;
+        }
+
+        .format-picker-btn.unavailable {
+            opacity: 0.4;
+            cursor: not-allowed;
+            border-color: var(--ink-08);
+        }
+
+        .format-picker-btn.unavailable:hover {
+            background: var(--card-bg);
+            border-color: var(--ink-08);
+        }
+
+        .format-attach-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .format-attach-btn {
+            padding: 6px 14px;
+            font-size: 10px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            border: 1px solid var(--ink-20);
+            background: var(--card-bg);
+            border-radius: 3px;
+            color: var(--ink-60);
+            cursor: pointer;
+            font-family: var(--sans);
+            font-weight: 600;
+            transition: background 0.25s, color 0.25s, border-color 0.25s;
+        }
+
+        .format-attach-btn:hover {
+            background: var(--ink-08);
+            color: var(--ink);
+            border-color: var(--ink);
+        }
+
+        .format-attach-btn.attached {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        .format-attach-name {
+            font-size: 10px;
+            color: var(--ink-45);
+            margin-top: 2px;
+            word-break: break-all;
+        }
+
+        /* ── Add card ── */
+        .add-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 180px;
+            cursor: pointer;
+            background: transparent;
+            border: 1.5px dashed var(--ink-15);
+            transition: border-color 0.4s, background 0.4s;
+            padding: 36px 28px;
+        }
+
+        .add-card:hover {
+            border-color: var(--ink-30);
+            background: rgba(26, 110, 255, 0.02);
+        }
+
+        .add-card-plus {
+            font-size: 24px;
+            color: var(--ink-25);
+            margin-bottom: 8px;
+            font-weight: 200;
+        }
+
+        .add-card-text {
+            font-size: 11px;
+            color: var(--ink-40);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .add-card-sub {
+            font-size: 9px;
+            color: var(--ink-25);
+            margin-top: 4px;
+        }
+
+        /* ── Empty state ── */
+        .empty-state {
+            grid-column: 1/-1;
+            text-align: center;
+            padding: 60px;
+        }
+
+        .empty-state-text {
+            font-size: 13px;
+            color: var(--ink-35);
+        }
+
+        /* ── Modal ── */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(4px);
+            z-index: 99998;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: var(--bg);
+            border-radius: 6px;
+            max-width: 520px;
+            width: 100%;
+            padding: 40px 36px 32px;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+            position: relative;
+            animation: modalIn 0.25s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px) scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--ink-40);
+            cursor: pointer;
+            font-family: var(--sans);
+            transition: color 0.25s;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: var(--ink);
+        }
+
+        .modal-title {
+            font-family: var(--serif);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+
+        .modal-sub {
+            font-size: 11px;
+            color: var(--ink-50);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            font-weight: 500;
+        }
+
+        .modal-field {
+            margin-bottom: 18px;
+        }
+
+        .modal-field label {
+            display: block;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--ink-60);
+            margin-bottom: 6px;
+        }
+
+        .modal-field input,
+        .modal-field textarea {
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 14px;
+            font-family: var(--sans);
+            background: var(--card-bg);
+            border: 1px solid var(--ink-12);
+            border-radius: 4px;
+            color: var(--ink);
+            outline: none;
+            transition: border-color 0.25s;
+        }
+
+        .modal-field input:focus,
+        .modal-field textarea:focus {
+            border-color: var(--accent);
+        }
+
+        .modal-field textarea {
+            resize: vertical;
+            min-height: 72px;
+        }
+
+        .modal-field input[type="file"] {
+            padding: 8px 0;
+            border: none;
+            background: none;
+            font-size: 12px;
+        }
+
+        .modal-field input[type="file"]::file-selector-button {
+            padding: 6px 14px;
+            font-size: 10px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            border: 1px solid var(--ink-20);
+            background: var(--card-bg);
+            border-radius: 3px;
+            color: var(--ink-60);
+            cursor: pointer;
+            font-family: var(--sans);
+            transition: background 0.25s, color 0.25s;
+            margin-right: 10px;
+        }
+
+        .modal-field input[type="file"]::file-selector-button:hover {
+            background: var(--ink-08);
+            color: var(--ink);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 24px;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 10px 24px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--sans);
+            transition: background 0.25s, transform 0.25s;
+        }
+
+        .modal-btn-primary {
+            background: var(--ink);
+            color: #fff;
+        }
+
+        .modal-btn-primary:hover {
+            background: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .modal-btn-secondary {
+            background: var(--ink-08);
+            color: var(--ink-60);
+        }
+
+        .modal-btn-secondary:hover {
+            background: var(--ink-20);
+            color: var(--ink);
+        }
+
+        /* ── Password Prompt ── */
+        .modal-pass .modal-field input {
+            font-size: 24px;
+            letter-spacing: 8px;
+            text-align: center;
+            padding: 12px;
+        }
+
+        .modal-pass .modal-field input::placeholder {
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+
+        /* ── Remove confirmation ── */
+        .modal-remove-text {
+            font-size: 15px;
+            color: var(--ink-70);
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .modal-remove-text strong {
+            color: var(--ink);
+        }
+
+        .modal-btn-danger {
+            background: #D04040;
+            color: #fff;
+        }
+
+        .modal-btn-danger:hover {
+            background: #b03030;
+            transform: translateY(-1px);
+        }
+
+        /* ── Studytron Banner ── */
+        .studytron-banner {
+            position: relative;
+            z-index: 2;
+            margin: 0 52px 100px;
+            border-radius: 4px;
+            background: var(--ink);
+            overflow: hidden;
+            padding: 60px 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 32px;
+        }
+
+        .studytron-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 80% 50%, rgba(26, 110, 255, 0.20) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .studytron-banner-text h3 {
+            font-family: var(--serif);
+            font-size: clamp(28px, 3.5vw, 44px);
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+        }
+
+        .studytron-banner-text h3 em {
+            font-style: italic;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.45);
+        }
+
+        .studytron-banner-text p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.55);
+            font-weight: 300;
+            max-width: 400px;
+            line-height: 1.7;
+        }
+
+        .studytron-banner-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 36px;
+            border-radius: 40px;
+            background: #fff;
+            color: var(--ink);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: transform 0.35s, box-shadow 0.35s;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+            flex-shrink: 0;
+        }
+
+        .studytron-banner-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 36px rgba(0, 0, 0, 0.3);
+        }
+
+        .studytron-banner-btn .dot {
+            width: 7px;
+            height: 7px;
+            background: #5DF5A5;
+            border-radius: 50%;
+            animation: pulse 2s ease infinite;
+        }
+
+        /* ── Footer ── */
+        #footer {
+            position: relative;
+            z-index: 2;
+            padding: 72px 52px 36px;
+            max-width: 1300px;
+            margin: 0 auto;
+            border-top: 1px solid var(--ink-08);
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .footer-left .logo {
+            font-family: var(--serif);
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--ink);
+            letter-spacing: -0.3px;
+            margin-bottom: 4px;
+        }
+
+        .footer-left .logo em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--ink-30);
+        }
+
+        .footer-left .tagline {
+            font-size: 10px;
+            color: var(--ink-40);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .footer-right {
+            text-align: right;
+        }
+
+        .footer-right .email {
+            font-size: 11px;
+            color: var(--ink-50);
+        }
+
+        .footer-right .email a {
+            color: var(--ink-60);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-right .email a:hover {
+            color: var(--accent);
+        }
+
+        .footer-right .credit {
+            font-size: 9px;
+            color: var(--ink-25);
+            margin-top: 4px;
+            letter-spacing: 1px;
+        }
+
+        /* ── Notification ── */
+        #notif {
+            position: fixed;
+            bottom: 44px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 99999;
+            padding: 11px 26px;
+            background: var(--ink);
+            color: #fff;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+            font-family: var(--sans);
+            box-shadow: 0 8px 32px rgba(24, 24, 27, 0.25);
+            letter-spacing: 0.3px;
+        }
+
+        /* ── CSS custom property extras ── */
+        :root {
+            --ink-12: rgba(24, 24, 27, 0.12);
+            --ink-15: rgba(24, 24, 27, 0.15);
+            --ink-25: rgba(24, 24, 27, 0.25);
+            --ink-30: rgba(24, 24, 27, 0.30);
+            --ink-35: rgba(24, 24, 27, 0.35);
+            --ink-40: rgba(24, 24, 27, 0.40);
+            --ink-45: rgba(24, 24, 27, 0.45);
+            --ink-50: rgba(24, 24, 27, 0.50);
+            --ink-55: rgba(24, 24, 27, 0.55);
+            --ink-60: rgba(24, 24, 27, 0.60);
+            --ink-65: rgba(24, 24, 27, 0.65);
+            --ink-70: rgba(24, 24, 27, 0.70);
+            --ink-80: rgba(24, 24, 27, 0.80);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            nav {
+                padding: 18px 24px;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+
+            .nav-email {
+                display: none;
+            }
+
+            #hero {
+                padding: 140px 24px 80px;
+            }
+
+            .story-section {
+                padding: 0 24px;
+            }
+
+            .story-image-block {
+                height: 50vh;
+                min-height: 300px;
+            }
+
+            #archive {
+                padding: 80px 24px 100px;
+            }
+
+            .studytron-banner {
+                margin: 0 24px 80px;
+                padding: 40px 36px;
+                flex-direction: column;
+            }
+
+            #footer {
+                padding: 56px 24px 28px;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .footer-right {
+                text-align: left;
+            }
+
+            .modal-box {
+                padding: 28px 24px 24px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                cursor: auto;
+            }
+
+            #cursor,
+            #cursor-glow {
+                display: none;
+            }
+
+            nav {
+                padding: 14px 20px;
+            }
+
+            #hero {
+                padding: 120px 20px 60px;
+            }
+
+            .story-section {
+                padding: 0 20px;
+            }
+
+            .story-image-block {
+                height: 40vh;
+                min-height: 240px;
+                margin-bottom: 40px;
+            }
+
+            #archive {
+                padding: 60px 20px 80px;
+            }
+
+            .archive-tab {
+                padding: 9px 14px;
+                font-size: 10px;
+            }
+
+            .guide-card {
+                padding: 24px 18px;
+            }
+
+            .studytron-banner {
+                margin: 0 20px 60px;
+                padding: 32px 24px;
+            }
+
+            #footer {
+                padding: 44px 20px 22px;
+            }
+
+            .modal-box {
+                padding: 24px 20px 20px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Custom cursor -->
+    <div id="cursor"></div>
+    <div id="cursor-glow"></div>
+
+    <div class="grid-texture"></div>
+
+    <!-- Nav -->
+    <nav>
+        <a href="#" class="nav-logo">Study <em>Vault</em></a>
+        <div class="nav-links">
+            <a href="#hero" class="nav-link active">Home</a>
+            <a href="#archive" class="nav-link">Archive</a>
+            <span class="nav-email">ansolx16@gmail.com</span>
+            <a href="studytron.html" class="nav-chat-btn"><span class="dot"
+                    style="display:inline-block;width:6px;height:6px;background:#5DF5A5;border-radius:50%;margin-right:6px;vertical-align:middle;animation:pulse 2s ease infinite;"></span>Studytron
+                AI</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section id="hero">
+        <div class="hero-inner">
+            <div class="hero-label"><span></span> Grade 8 · Knowledge Archive <span></span></div>
+            <h1 class="hero-title">
+                <span class="line-wrap"><span class="line">The Study</span></span>
+                <span class="line-wrap"><span class="line line-light">Vault</span></span>
+            </h1>
+            <div class="hero-sub">Knowledge is Gold</div>
+            <div class="hero-divider"></div>
+            <div class="hero-stateline">
+                <div class="hero-stateline-item"><strong>6</strong> Subjects</div>
+                <div class="hero-stateline-div"></div>
+                <div class="hero-stateline-item"><strong>24+</strong> Guides</div>
+                <div class="hero-stateline-div"></div>
+                <div class="hero-stateline-item"><strong>100%</strong> Free</div>
+            </div>
+            <div class="hero-cta-wrap">
+                <a href="studytron.html" class="hero-cta"><span class="dot"></span> Ask Studytron AI</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Story 1 -->
+    <section class="story-section" id="story1">
+        <div class="story-image-block" data-speed="0.8">
+            <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1890&q=80"
+                alt="Library shelves" loading="lazy">
+            <div class="image-overlay"></div>
+            <div class="image-caption">Curated for clarity</div>
+        </div>
+    </section>
+
+    <!-- Editorial 1 -->
+    <section class="editorial-content" id="essay1">
+        <div class="section-number">01 — Philosophy</div>
+        <h2>Knowledge,<br><span class="light">curated.</span></h2>
+        <p>Bro, I stayed up doing so much coding just to carry Team Yellow to a W. The least you can do is check out
+            the files! Everything is organized and ready to go.</p>
+        <p>I Loaded this thing up with every file I could get my hands on. It’s all there, so get to work and actually
+            check it out</p>
+        <a href="#archive" class="read-more"><span>Explore the archive</span> <span class="arrow">→</span></a>
+    </section>
+
+    <!-- Story 2 -->
+    <section class="story-section" id="story2">
+        <div class="story-image-block" data-speed="1.2">
+            <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1673&q=80"
+                alt="Study materials" loading="lazy">
+            <div class="image-overlay"></div>
+            <div class="image-caption">Social Science · English · Mathematics · Science · Malayalam · Hindi</div>
+        </div>
+    </section>
+
+    <!-- Editorial 2 -->
+    <section class="editorial-content" id="essay2">
+        <div class="section-number">02 — Structure</div>
+        <h2>Designed for<br><span class="light">focus.</span></h2>
+        <p>I broke everything down into subjects so it’s easy to find. I didn't just throw random stuff in here; I
+            actually organized it for you sigmas. Just pick your subject, find what you need, and grab the files.
+            Studying shouldn't be annoying—this is how it's actually supposed to be.</p>
+        <p>Navigate by subject. Discover by topic. Download with purpose. This is how knowledge should feel: calm,
+            accessible, and enduring.</p>
+    </section>
+
+    <!-- Studytron Banner -->
+    <div class="studytron-banner">
+        <div class="studytron-banner-text">
+            <h3>Meet <em>Studytron</em> — your AI study partner</h3>
+            <p>Ask questions about any Grade 8 topic across all six subjects. Get clear explanations, exam tips, and
+                concept breakdowns — instantly.</p>
+        </div>
+        <a href="studytron.html" class="studytron-banner-btn"><span class="dot"></span> Open Studytron</a>
+    </div>
+
+    <!-- Archive -->
+    <section id="archive">
+        <div class="archive-header">
+            <div class="label">The Archive</div>
+            <h2>Your <span class="italic">Guides</span></h2>
+            <div class="desc">Curated study materials organized by subject. Attach files, open resources, and build your
+                personal study collection.</div>
+        </div>
+
+        <div class="archive-controls" id="subjectTabs">
+            <button class="archive-tab active" data-subject="social" onclick="switchSubject('social')">Social
+                Science</button>
+            <button class="archive-tab" data-subject="english" onclick="switchSubject('english')">English</button>
+            <button class="archive-tab" data-subject="maths" onclick="switchSubject('maths')">Mathematics</button>
+            <button class="archive-tab" data-subject="science" onclick="switchSubject('science')">Science</button>
+            <button class="archive-tab" data-subject="malayalam" onclick="switchSubject('malayalam')">Malayalam</button>
+            <button class="archive-tab" data-subject="hindi" onclick="switchSubject('hindi')">Hindi</button>
+        </div>
+
+        <div id="subjectPanels">
+            <div class="archive-grid active" id="panel-social"></div>
+            <div class="archive-grid" id="panel-english"></div>
+            <div class="archive-grid" id="panel-maths"></div>
+            <div class="archive-grid" id="panel-science"></div>
+            <div class="archive-grid" id="panel-malayalam"></div>
+            <div class="archive-grid" id="panel-hindi"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="footer-inner">
+            <div class="footer-left">
+                <div class="logo">Study <em>Vault</em></div>
+                <div class="tagline">Grade 8 · Yellow Team · Open Archive</div>
+            </div>
+            <div class="footer-right">
+                <div class="email">✉ <a href="mailto:ansolx16@gmail.com">ansolx16@gmail.com</a></div>
+                <div class="credit">Made by Fantastic Go</div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="notif"></div>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box" id="modalBox"></div>
+    </div>
+
+    <script>
+        // ================================================================
+        // LENIS
+        // ================================================================
+        const lenis = new Lenis({
+            duration: 1.8,
+            easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smoothWheel: true, wheelMultiplier: 0.85,
+            smoothTouch: false, touchMultiplier: 1.4,
+        });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+
+        // ================================================================
+        // CURSOR
+        // ================================================================
+        const cursor = document.getElementById('cursor');
+        const cursorGlow = document.getElementById('cursor-glow');
+        let mx = 0, my = 0, cx = 0, cy = 0, gx = 0, gy = 0;
+
+        document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+        (function tickCursor() {
+            cx += (mx - cx) * 0.18;
+            cy += (my - cy) * 0.18;
+            gx += (mx - gx) * 0.06;
+            gy += (my - gy) * 0.06;
+            cursor.style.left = cx + 'px';
+            cursor.style.top = cy + 'px';
+            cursorGlow.style.left = gx + 'px';
+            cursorGlow.style.top = gy + 'px';
+            requestAnimationFrame(tickCursor);
+        })();
+
+        document.querySelectorAll('a, button, .archive-tab, .add-card, .scroll-indicator').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('hovering-link'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('hovering-link'));
+        });
+
+        // ================================================================
+        // MODAL SYSTEM
+        // ================================================================
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalBox = document.getElementById('modalBox');
+
+        function openModal(html) {
+            modalBox.innerHTML = html;
+            modalOverlay.classList.add('active');
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+        }
+
+        modalOverlay.addEventListener('click', e => {
+            if (e.target === modalOverlay) closeModal();
+        });
+
+        // ================================================================
+        // PASSWORD
+        // ================================================================
+        const PASSWORD = '1984';
+
+        function showPasswordPrompt(callback) {
+            openModal(`
+                <button class="modal-close" onclick="closeModal()">✕</button>
+                <div class="modal-title">🔐 Password Required</div>
+                <div class="modal-sub">Enter password to continue</div>
+                <div class="modal-field modal-pass">
+                    <label>Password</label>
+                    <input type="password" id="passInput" placeholder="Enter password" maxlength="20" />
+                </div>
+                <div class="modal-actions">
+                    <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button class="modal-btn modal-btn-primary" id="passSubmit">Continue</button>
+                </div>
+            `);
+            const input = document.getElementById('passInput');
+            const submit = document.getElementById('passSubmit');
+            const doCheck = () => {
+                if (input.value === PASSWORD) {
+                    closeModal();
+                    callback();
+                } else {
+                    showNotification('❌ Wrong password. Try again.');
+                    input.value = '';
+                    input.focus();
+                }
+            };
+            submit.addEventListener('click', doCheck);
+            input.addEventListener('keydown', e => { if (e.key === 'Enter') doCheck(); });
+            setTimeout(() => input.focus(), 100);
+        }
+
+        // ================================================================
+        // DATA
+        // ================================================================
+        const DEFAULT_GUIDES = {
+            social: {
+                name: 'Social Science', icon: '🌍', guides: [
+                    { title: 'Natural Resources And Their Use', desc: 'Complete notes on causes, events, and outcomes.', tags: ['History', 'Ch 1'], date: '2026-06-20', files: { html: null, docx: null, txt: null } },
+                    { title: 'Nazism and the Rise of Hitler', desc: 'Detailed guide covering Hitler\'s rise and WWII.', tags: ['History', 'Ch 3'], date: '2026-06-18', files: { html: null, docx: null, txt: null } },
+                    { title: 'Resources & Development', desc: 'Geography notes on resources and sustainability.', tags: ['Geography', 'Ch 1'], date: '2026-06-15', files: { html: null, docx: null, txt: null } },
+                    { title: 'The Indian Constitution', desc: 'Civics guide on the making of the Constitution.', tags: ['Civics', 'Ch 1'], date: '2026-06-12', files: { html: null, docx: null, txt: null } },
+                ]
+            },
+            english: {
+                name: 'English', icon: '📖', guides: [
+                    { title: 'The Best Christmas Present', desc: 'Summary, themes, and important questions.', tags: ['Prose', 'Ch 1'], date: '2026-06-22', files: { html: null, docx: null, txt: null } },
+                    { title: 'The Tsunami', desc: 'Comprehensive guide with vocabulary and tasks.', tags: ['Prose', 'Ch 2'], date: '2026-06-19', files: { html: null, docx: null, txt: null } },
+                    { title: 'Grammar: Tenses', desc: 'Complete tense guide with practice exercises.', tags: ['Grammar'], date: '2026-06-16', files: { html: null, docx: null, txt: null } },
+                    { title: 'Poem: The Ant and Cricket', desc: 'Poem analysis, moral, and questions.', tags: ['Poetry'], date: '2026-06-13', files: { html: null, docx: null, txt: null } },
+                ]
+            },
+            maths: {
+                name: 'Mathematics', icon: '📐', guides: [
+                    { title: 'Rational Numbers', desc: 'Properties, operations, number line.', tags: ['Ch 1'], date: '2026-06-21', files: { html: null, docx: null, txt: null } },
+                    { title: 'Linear Equations', desc: 'Step-by-step solving methods.', tags: ['Ch 2'], date: '2026-06-17', files: { html: null, docx: null, txt: null } },
+                    { title: 'Quadrilaterals', desc: 'Types, properties, angle calculations.', tags: ['Ch 3', 'Geometry'], date: '2026-06-14', files: { html: null, docx: null, txt: null } },
+                    { title: 'Data Handling', desc: 'Bar graphs, pie charts, probability.', tags: ['Ch 4'], date: '2026-06-10', files: { html: null, docx: null, txt: null } },
+                ]
+            },
+            science: {
+                name: 'Science', icon: '🔬', guides: [
+                    { title: 'Crop Production', desc: 'Agricultural practices and harvesting.', tags: ['Biology', 'Ch 1'], date: '2026-06-23', files: { html: null, docx: null, txt: null } },
+                    { title: 'Microorganisms', desc: 'Types of microbes, uses, harmful effects.', tags: ['Biology', 'Ch 2'], date: '2026-06-20', files: { html: null, docx: null, txt: null } },
+                    { title: 'Force and Pressure', desc: 'Types of forces and applications.', tags: ['Physics', 'Ch 11'], date: '2026-06-18', files: { html: null, docx: null, txt: null } },
+                    { title: 'Chemical Effects of Current', desc: 'Electroplating and conductors.', tags: ['Chemistry', 'Ch 14'], date: '2026-06-15', files: { html: null, docx: null, txt: null } },
+                ]
+            },
+            malayalam: {
+                name: 'Malayalam', icon: '🖋️', guides: [
+                    { title: 'കേരള പാഠാവലി - പാഠം 1', desc: 'കഥകളുടെ സംഗ്രഹവും ചോദ്യോത്തരങ്ങളും.', tags: ['Prose', 'Ch 1'], date: '2026-06-22', files: { html: null, docx: null, txt: null } },
+                    { title: 'വ്യാകരണം - സന്ധി', desc: 'സന്ധി നിയമങ്ങളും ഉദാഹരണങ്ങളും.', tags: ['Grammar'], date: '2026-06-19', files: { html: null, docx: null, txt: null } },
+                    { title: 'കവിത - മണ്ണിന്റെ പാട്ട്', desc: 'കവിതയുടെ വ്യാഖ്യാനവും ആശയങ്ങളും.', tags: ['Poetry'], date: '2026-06-16', files: { html: null, docx: null, txt: null } },
+                    { title: 'ശൈലികൾ', desc: 'പ്രധാന ശൈലികളും അർത്ഥവും ഉപയോഗവും.', tags: ['Language'], date: '2026-06-13', files: { html: null, docx: null, txt: null } },
+                ]
+            },
+            hindi: {
+                name: 'Hindi', icon: '🇮🇳', guides: [
+                    { title: 'ध्वनि - पाठ 1', desc: 'कविता का सारांश और प्रश्नोत्तर।', tags: ['Poetry', 'Ch 1'], date: '2026-06-21', files: { html: null, docx: null, txt: null } },
+                    { title: 'लाख की चूड़ियाँ', desc: 'कहानी का विश्लेषण और अभ्यास।', tags: ['Prose', 'Ch 2'], date: '2026-06-18', files: { html: null, docx: null, txt: null } },
+                    { title: 'व्याकरण - संज्ञा', desc: 'संज्ञा के भेद और उदाहरण।', tags: ['Grammar'], date: '2026-06-15', files: { html: null, docx: null, txt: null } },
+                    { title: 'वाच्य परिवर्तन', desc: 'कर्तृवाच्य, कर्मवाच्य, भाववाच्य।', tags: ['Grammar'], date: '2026-06-12', files: { html: null, docx: null, txt: null } },
+                ]
+            },
+        };
+
+        // Load from localStorage or use defaults
+        function loadGuides() {
+            try {
+                const saved = localStorage.getItem('sv_guides_meta');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    // Merge saved metadata with defaults — keep saved if exists
+                    const result = {};
+                    for (const [key, sub] of Object.entries(DEFAULT_GUIDES)) {
+                        if (parsed[key]) {
+                            result[key] = {
+                                name: sub.name,
+                                icon: sub.icon,
+                                guides: parsed[key]
+                            };
+                        } else {
+                            result[key] = {
+                                name: sub.name,
+                                icon: sub.icon,
+                                guides: sub.guides.map(g => ({ ...g }))
+                            };
+                        }
+                    }
+                    return result;
+                }
+            } catch (e) { /* fall through */ }
+            // Return deep copy of defaults
+            const result = {};
+            for (const [key, sub] of Object.entries(DEFAULT_GUIDES)) {
+                result[key] = {
+                    name: sub.name,
+                    icon: sub.icon,
+                    guides: sub.guides.map(g => ({ ...g, files: { html: null, docx: null, txt: null } }))
+                };
+            }
+            return result;
+        }
+
+        function saveGuidesMeta() {
+            // Save only metadata (titles, descs, tags, dates) — NOT file data
+            const meta = {};
+            for (const [key, sub] of Object.entries(GUIDES)) {
+                meta[key] = sub.guides.map(g => ({
+                    title: g.title,
+                    desc: g.desc,
+                    tags: g.tags,
+                    date: g.date
+                }));
+            }
+            localStorage.setItem('sv_guides_meta', JSON.stringify(meta));
+        }
+
+        let GUIDES = loadGuides();
+
+        // Migrate old single-file attachments to new multi-format files
+        function migrateFiles() {
+            for (const [s, sub] of Object.entries(GUIDES)) {
+                sub.guides.forEach((g, i) => {
+                    if (!g.files) g.files = { html: null, docx: null, txt: null };
+                    // Migrate old single-file key
+                    const oldKey = 'sv_file_' + s + '_' + i;
+                    try {
+                        const d = localStorage.getItem(oldKey);
+                        if (d) {
+                            const parsed = JSON.parse(d);
+                            if (parsed && parsed.name) {
+                                // Guess format from file extension
+                                const name = parsed.name.toLowerCase();
+                                if (name.endsWith('.html') || name.endsWith('.htm')) g.files.html = parsed;
+                                else if (name.endsWith('.docx') || name.endsWith('.doc')) g.files.docx = parsed;
+                                else if (name.endsWith('.txt')) g.files.txt = parsed;
+                                else g.files.txt = parsed; // fallback
+                                localStorage.removeItem(oldKey); // clean up
+                            }
+                        }
+                    } catch (e) { /* skip */ }
+                    // Load per-format keys
+                    ['html', 'docx', 'txt'].forEach(fmt => {
+                        const fk = 'sv_f_' + s + '_' + i + '_' + fmt;
+                        try {
+                            const d = localStorage.getItem(fk);
+                            if (d) {
+                                const parsed = JSON.parse(d);
+                                if (parsed && parsed.name) g.files[fmt] = parsed;
+                            }
+                        } catch (e) { /* skip */ }
+                    });
+                });
+            }
+        }
+        migrateFiles();
+
+        // ================================================================
+        // RENDER
+        // ================================================================
+        function renderSubject(id) {
+            const panel = document.getElementById('panel-' + id);
+            const sub = GUIDES[id];
+            if (!sub || !panel) return;
+            panel.innerHTML = '';
+            if (sub.guides.length === 0) {
+                panel.innerHTML = '<div class="empty-state"><div class="empty-state-text">No guides yet.</div></div>';
+                return;
+            }
+            const FORMAT_ICONS = { html: '🌐', docx: '📄', txt: '📃' };
+            const FORMAT_LABELS = { html: 'HTML', docx: 'DOCX', txt: 'TXT' };
+            sub.guides.forEach((g, i) => {
+                if (!g.files) g.files = { html: null, docx: null, txt: null };
+                const anyFile = !!(g.files.html || g.files.docx || g.files.txt);
+                const formatBadges = ['html', 'docx', 'txt'].map(fmt =>
+                    '<span class="guide-format-badge ' + (g.files[fmt] ? 'available' : 'missing') + '">' + FORMAT_ICONS[fmt] + ' ' + FORMAT_LABELS[fmt] + '</span>'
+                ).join('');
+                const fileNames = ['html', 'docx', 'txt'].filter(f => g.files[f]).map(f => g.files[f].name).join(', ');
+                const c = document.createElement('div');
+                c.className = 'guide-card';
+                c.dataset.subject = id; c.dataset.index = i;
+                c.innerHTML =
+                    '<div class="guide-card-icon">' + sub.icon + '</div>' +
+                    '<div class="guide-card-title">' + g.title + '</div>' +
+                    '<div class="guide-card-desc">' + g.desc + '</div>' +
+                    '<div class="guide-card-tags">' + g.tags.map(t => '<span class="guide-tag">' + t + '</span>').join('') + '</div>' +
+                    '<div class="guide-format-badges">' + formatBadges + '</div>' +
+                    '<div class="guide-card-meta">' +
+                    '<span class="guide-date">' + g.date + '</span>' +
+                    '<div class="guide-actions">' +
+                    '<button class="guide-action-btn open-btn" data-action="open"' + (anyFile ? '' : ' style="display:none"') + '>Open</button>' +
+                    '<button class="guide-action-btn replace-btn" data-action="replace">Upload</button>' +
+                    '<button class="guide-action-btn remove-btn" data-action="remove"' + (anyFile ? '' : ' style="display:none"') + '>Remove</button>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="guide-file-status' + (anyFile ? ' has-file' : '') + '">' + (anyFile ? '📎 ' + fileNames : 'No files attached') + '</div>';
+                c.querySelectorAll('.guide-action-btn').forEach(btn => {
+                    btn.addEventListener('click', e => {
+                        e.stopPropagation();
+                        const action = btn.dataset.action, s = c.dataset.subject, idx = parseInt(c.dataset.index);
+                        if (action === 'open') handleOpen(s, idx);
+                        else if (action === 'replace') handleReplace(s, idx);
+                        else if (action === 'remove') handleRemove(s, idx);
+                    });
+                });
+                // card hover cursor class
+                c.addEventListener('mouseenter', () => document.body.classList.add('hovering-card'));
+                c.addEventListener('mouseleave', () => document.body.classList.remove('hovering-card'));
+                panel.appendChild(c);
+            });
+            const add = document.createElement('div');
+            add.className = 'add-card';
+            add.innerHTML = '<div class="add-card-plus">+</div><div class="add-card-text">Add Guide</div><div class="add-card-sub">Attach a file to this subject</div>';
+            add.onclick = () => showPasswordPrompt(() => openAddModal(id));
+            panel.appendChild(add);
+        }
+
+        // ================================================================
+        // FILE HELPERS — open data-url blob in new tab
+        // ================================================================
+        function openFileData(fileData) {
+            if (!fileData || !fileData.data) return false;
+            try {
+                const b64 = (fileData.data.split(',')[1] || fileData.data);
+                const bytes = atob(b64);
+                const arr = new Uint8Array(bytes.length);
+                for (let k = 0; k < bytes.length; k++) arr[k] = bytes.charCodeAt(k);
+                const blob = new Blob([arr], { type: fileData.type || 'application/octet-stream' });
+                const url = URL.createObjectURL(blob);
+                window.open(url, '_blank');
+                setTimeout(() => URL.revokeObjectURL(url), 60000);
+                return true;
+            } catch (e) {
+                if (fileData.data.startsWith('data:')) { window.open(fileData.data, '_blank'); return true; }
+                return false;
+            }
+        }
+
+        // ================================================================
+        // FILE ACTIONS
+        // ================================================================
+        function handleOpen(s, i) {
+            const g = GUIDES[s].guides[i];
+            if (!g.files) g.files = { html: null, docx: null, txt: null };
+            const hasHtml = !!g.files.html;
+            const hasDocx = !!g.files.docx;
+            const hasTxt = !!g.files.txt;
+            const anyAvailable = hasHtml || hasDocx || hasTxt;
+
+            if (!anyAvailable) {
+                showNotification('No files attached to this guide.');
+                return;
+            }
+
+            openModal(`
+                <button class="modal-close" onclick="closeModal()">✕</button>
+                <div class="modal-title">📂 Choose Format</div>
+                <div class="modal-sub">${g.title}</div>
+                <div class="format-picker">
+                    ${hasHtml ? '<a class="format-picker-btn" href="#" onclick="event.preventDefault(); closeModal(); openSpecificFile(\'' + s + '\',' + i + ',\'html\')"><span><span class="format-label">🌐 HTML File</span><br><span class="format-ext">' + g.files.html.name + '</span></span><span class="format-arrow">→</span></a>' :
+                    '<div class="format-picker-btn unavailable"><span><span class="format-label">🌐 HTML File</span><br><span class="format-ext">Not uploaded</span></span></div>'}
+                    ${hasDocx ? '<a class="format-picker-btn" href="#" onclick="event.preventDefault(); closeModal(); openSpecificFile(\'' + s + '\',' + i + ',\'docx\')"><span><span class="format-label">📄 DOCX File</span><br><span class="format-ext">' + g.files.docx.name + '</span></span><span class="format-arrow">→</span></a>' :
+                    '<div class="format-picker-btn unavailable"><span><span class="format-label">📄 DOCX File</span><br><span class="format-ext">Not uploaded</span></span></div>'}
+                    ${hasTxt ? '<a class="format-picker-btn" href="#" onclick="event.preventDefault(); closeModal(); openSpecificFile(\'' + s + '\',' + i + ',\'txt\')"><span><span class="format-label">📃 TXT File</span><br><span class="format-ext">' + g.files.txt.name + '</span></span><span class="format-arrow">→</span></a>' :
+                    '<div class="format-picker-btn unavailable"><span><span class="format-label">📃 TXT File</span><br><span class="format-ext">Not uploaded</span></span></div>'}
+                </div>
+                <div class="modal-actions">
+                    <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Cancel</button>
+                </div>
+            `);
+        }
+
+        function openSpecificFile(s, i, fmt) {
+            const g = GUIDES[s].guides[i];
+            if (!g.files) g.files = { html: null, docx: null, txt: null };
+            if (g.files[fmt]) {
+                if (!openFileData(g.files[fmt])) {
+                    showNotification('Could not open file. Re-attach it.');
+                }
+            } else {
+                showNotification(fmt.toUpperCase() + ' version not available for this guide.');
+            }
+        }
+
+        function handleReplace(s, i) {
+            showPasswordPrompt(() => {
+                const g = GUIDES[s].guides[i];
+                if (!g.files) g.files = { html: null, docx: null, txt: null };
+                const fmtNames = { html: '🌐 HTML (.html)', docx: '📄 DOCX (.docx)', txt: '📃 TXT (.txt)' };
+                const fmtAccepts = { html: '.html,.htm', docx: '.docx,.doc', txt: '.txt' };
+
+                openModal(`
+                    <button class="modal-close" onclick="closeModal()">✕</button>
+                    <div class="modal-title">📎 Upload Files</div>
+                    <div class="modal-sub">${g.title}</div>
+                    <div class="format-attach-group">
+                        ${['html', 'docx', 'txt'].map(fmt => `
+                            <div style="flex:1;min-width:140px;margin-bottom:8px;">
+                                <label style="display:block;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink-60);margin-bottom:4px;">${fmtNames[fmt]}</label>
+                                <button class="format-attach-btn ${g.files[fmt] ? 'attached' : ''}" id="fmtBtn_${fmt}" onclick="uploadFormat('${s}',${i},'${fmt}')">${g.files[fmt] ? '✅ Attached' : 'Upload'}</button>
+                                <div class="format-attach-name" id="fmtName_${fmt}">${g.files[fmt] ? g.files[fmt].name : '—'}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="modal-actions">
+                        <button class="modal-btn modal-btn-secondary" onclick="closeModal(); renderSubject('${s}')">Done</button>
+                    </div>
+                `);
+            });
+        }
+
+        function uploadFormat(s, i, fmt) {
+            const inp = document.createElement('input'); inp.type = 'file';
+            const accepts = { html: '.html,.htm', docx: '.docx,.doc', txt: '.txt' };
+            inp.accept = accepts[fmt];
+            inp.onchange = e => {
+                const file = e.target.files[0]; if (!file) return;
+                const reader = new FileReader();
+                reader.onload = ev => {
+                    const data = { name: file.name, type: file.type, size: file.size, data: ev.target.result };
+                    const g = GUIDES[s].guides[i];
+                    if (!g.files) g.files = { html: null, docx: null, txt: null };
+                    g.files[fmt] = data;
+                    saveFormatFile(s, i, fmt, data);
+                    // Update button in the modal
+                    const btn = document.getElementById('fmtBtn_' + fmt);
+                    if (btn) { btn.textContent = '✅ Attached'; btn.classList.add('attached'); }
+                    const nameEl = document.getElementById('fmtName_' + fmt);
+                    if (nameEl) nameEl.textContent = file.name;
+                    showNotification('📎 ' + file.name + ' uploaded');
+                };
+                reader.readAsDataURL(file);
+            };
+            inp.click();
+        }
+
+        function handleRemove(s, i) {
+            // Ask for password before removing guide completely
+            showPasswordPrompt(() => {
+                const g = GUIDES[s].guides[i];
+                showRemoveConfirm(s, i, g.title);
+            });
+        }
+
+        function showRemoveConfirm(s, i, title) {
+            openModal(`
+                <button class="modal-close" onclick="closeModal()">✕</button>
+                <div class="modal-title">🗑️ Remove Guide</div>
+                <div class="modal-sub">This action cannot be undone</div>
+                <div class="modal-remove-text">Are you sure you want to remove <strong>"${title}"</strong> from ${GUIDES[s].name}?</div>
+                <div class="modal-actions">
+                    <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button class="modal-btn modal-btn-danger" id="removeConfirm">Remove Guide</button>
+                </div>
+            `);
+            document.getElementById('removeConfirm').addEventListener('click', () => {
+                // Clear all format files
+                ['html', 'docx', 'txt'].forEach(fmt => saveFormatFile(s, i, fmt, null));
+                GUIDES[s].guides.splice(i, 1);
+                saveGuidesMeta();
+                renderSubject(s);
+                closeModal();
+                showNotification('🗑️ Guide removed from ' + GUIDES[s].name);
+            });
+        }
+
+        // ================================================================
+        // STORAGE UTILITIES (for per-format file data)
+        // ================================================================
+        function getFormatKey(s, i, fmt) { return 'sv_f_' + s + '_' + i + '_' + fmt; }
+        function saveFormatFile(s, i, fmt, data) {
+            const key = getFormatKey(s, i, fmt);
+            data ? localStorage.setItem(key, JSON.stringify(data)) : localStorage.removeItem(key);
+        }
+
+        // ================================================================
+        // ADD GUIDE MODAL
+        // ================================================================
+        function openAddModal(id) {
+            openModal(`
+                <button class="modal-close" onclick="closeModal()">✕</button>
+                <div class="modal-title">📖 Add New Guide</div>
+                <div class="modal-sub">to ${GUIDES[id].name}</div>
+                <div class="modal-field">
+                    <label>Guide Name *</label>
+                    <input type="text" id="addTitle" placeholder="e.g. The French Revolution" />
+                </div>
+                <div class="modal-field">
+                    <label>Date</label>
+                    <input type="date" id="addDate" value="${new Date().toISOString().split('T')[0]}" />
+                </div>
+                <div class="modal-field">
+                    <label>Description</label>
+                    <textarea id="addDesc" placeholder="Brief description of this guide..."></textarea>
+                </div>
+                <div class="modal-field">
+                    <label>Upload Files (optional)</label>
+                    <div class="format-attach-group">
+                        <div style="flex:1;min-width:120px;margin-bottom:6px;">
+                            <label style="display:block;font-size:9px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--ink-50);margin-bottom:2px;">🌐 HTML</label>
+                            <input type="file" id="addFileHtml" accept=".html,.htm" style="font-size:11px;padding:4px 0;border:none;background:none;width:100%;" />
+                        </div>
+                        <div style="flex:1;min-width:120px;margin-bottom:6px;">
+                            <label style="display:block;font-size:9px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--ink-50);margin-bottom:2px;">📄 DOCX</label>
+                            <input type="file" id="addFileDocx" accept=".docx,.doc" style="font-size:11px;padding:4px 0;border:none;background:none;width:100%;" />
+                        </div>
+                        <div style="flex:1;min-width:120px;margin-bottom:6px;">
+                            <label style="display:block;font-size:9px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--ink-50);margin-bottom:2px;">📃 TXT</label>
+                            <input type="file" id="addFileTxt" accept=".txt" style="font-size:11px;padding:4px 0;border:none;background:none;width:100%;" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button class="modal-btn modal-btn-primary" id="addSubmit">Add Guide</button>
+                </div>
+            `);
+            document.getElementById('addSubmit').addEventListener('click', () => submitAddGuide(id));
+            setTimeout(() => document.getElementById('addTitle').focus(), 100);
+        }
+
+        function readFileAsDataPromise(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = ev => resolve({ name: file.name, type: file.type, size: file.size, data: ev.target.result });
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function submitAddGuide(id) {
+            const title = document.getElementById('addTitle').value.trim();
+            if (!title) {
+                showNotification('⚠️ Please enter a guide name.');
+                document.getElementById('addTitle').focus();
+                return;
+            }
+            const desc = document.getElementById('addDesc').value.trim() || 'No description provided.';
+            const date = document.getElementById('addDate').value || new Date().toISOString().split('T')[0];
+
+            const htmlFile = document.getElementById('addFileHtml').files[0];
+            const docxFile = document.getElementById('addFileDocx').files[0];
+            const txtFile = document.getElementById('addFileTxt').files[0];
+
+            const files = { html: null, docx: null, txt: null };
+            const readTasks = [];
+
+            if (htmlFile) readTasks.push(readFileAsDataPromise(htmlFile).then(d => files.html = d));
+            if (docxFile) readTasks.push(readFileAsDataPromise(docxFile).then(d => files.docx = d));
+            if (txtFile) readTasks.push(readFileAsDataPromise(txtFile).then(d => files.txt = d));
+
+            await Promise.all(readTasks);
+
+            const idx = GUIDES[id].guides.length;
+            GUIDES[id].guides.push({
+                title: title,
+                desc: desc,
+                tags: ['Uploaded'],
+                date: date,
+                files: files
+            });
+
+            ['html', 'docx', 'txt'].forEach(fmt => {
+                if (files[fmt]) saveFormatFile(id, idx, fmt, files[fmt]);
+            });
+            saveGuidesMeta();
+            renderSubject(id);
+            closeModal();
+            showNotification('✅ "' + title + '" added to ' + GUIDES[id].name);
+        }
+
+        // ================================================================
+        // SWITCH SUBJECT
+        // ================================================================
+        function switchSubject(id) {
+            document.querySelectorAll('.archive-tab').forEach(t => t.classList.toggle('active', t.dataset.subject === id));
+            document.querySelectorAll('.archive-grid').forEach(g => g.classList.remove('active'));
+            const p = document.getElementById('panel-' + id);
+            if (p) p.classList.add('active');
+            renderSubject(id);
+            gsap.fromTo('#panel-' + id + ' .guide-card, #panel-' + id + ' .add-card',
+                { opacity: 0, y: 10 },
+                { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out', stagger: 0.04, clearProps: 'transform' }
+            );
+        }
+
+        // ================================================================
+        // NOTIFICATION
+        // ================================================================
+        function showNotification(text) {
+            const n = document.getElementById('notif'); if (!n) return;
+            n.textContent = text; n.style.opacity = '1';
+            setTimeout(() => n.style.opacity = '0', 2600);
+        }
+
+        // ================================================================
+        // GSAP ANIMATIONS
+        // ================================================================
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Page load
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+        tl.to('nav', { opacity: 1, y: 0, duration: 1.1 })
+            .to('.hero-label', { opacity: 1, y: 0, duration: 0.9 }, '-=0.7')
+            .to('.hero-title .line', { y: '0%', duration: 1.35, stagger: 0.18, ease: 'power4.out' }, '-=0.7')
+            .to('.hero-sub', { opacity: 1, y: 0, duration: 0.9 }, '-=0.75')
+            .to('.hero-divider', { opacity: 1, duration: 0.8 }, '-=0.6')
+            .to('.hero-stateline', { opacity: 1, y: 0, duration: 0.8 }, '-=0.6')
+            .to('.hero-cta-wrap', { opacity: 1, y: 0, duration: 0.8 }, '-=0.6')
+            .to('.scroll-indicator', { opacity: 1, duration: 0.8 }, '-=0.5');
+
+        // Parallax images
+        document.querySelectorAll('.story-image-block').forEach(block => {
+            const img = block.querySelector('img');
+            const speed = parseFloat(block.dataset.speed) || 1;
+            if (img) {
+                img.style.opacity = 0;
+                gsap.to(img, { opacity: 1, duration: 1.4, delay: 0.3 });
+                gsap.to(img, {
+                    y: () => block.offsetHeight * 0.14 * speed,
+                    ease: 'none',
+                    scrollTrigger: { trigger: block, start: 'top bottom', end: 'bottom top', scrub: 1.4 }
+                });
+            }
+            gsap.fromTo(block, { opacity: 0, y: 30 }, {
+                opacity: 1, y: 0, duration: 1.1, ease: 'power3.out',
+                scrollTrigger: { trigger: block, start: 'top 87%', toggleActions: 'play none none none' }
+            });
+        });
+
+        // Editorial reveals
+        document.querySelectorAll('.editorial-content,.archive-header,.studytron-banner').forEach(el => {
+            gsap.fromTo(el, { opacity: 0, y: 22 }, {
+                opacity: 1, y: 0, duration: 0.95, ease: 'power3.out',
+                scrollTrigger: { trigger: el, start: 'top 82%', toggleActions: 'play none none none' }
+            });
+        });
+
+        gsap.fromTo('.archive-controls', { opacity: 0, y: 10 }, {
+            opacity: 1, y: 0, duration: 0.7, ease: 'power3.out',
+            scrollTrigger: { trigger: '#archive', start: 'top 78%', toggleActions: 'play none none none' }
+        });
+
+        // Card hover lift (GSAP)
+        document.addEventListener('mouseover', e => {
+            const card = e.target.closest('.guide-card');
+            if (card && !card._hov) {
+                card._hov = true;
+                gsap.to(card, { y: -5, duration: 0.45, ease: 'power2.out' });
+            }
+        });
+        document.addEventListener('mouseout', e => {
+            const card = e.target.closest('.guide-card');
+            if (card) {
+                if (e.relatedTarget && card.contains(e.relatedTarget)) return;
+                card._hov = false;
+                gsap.to(card, { y: 0, duration: 0.45, ease: 'power2.out' });
+            }
+        });
+
+        // Nav scroll links
+        document.querySelectorAll('.nav-link, .read-more, .scroll-indicator').forEach(link => {
+            link.addEventListener('click', e => {
+                const href = link.getAttribute('href');
+                if (href && href.startsWith('#')) {
+                    e.preventDefault();
+                    const el = document.querySelector(href);
+                    if (el) lenis.scrollTo(el, { offset: -80, duration: 1.8 });
+                }
+            });
+        });
+
+        // Nav active state
+        lenis.on('scroll', () => {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && href.startsWith('#')) {
+                    const el = document.querySelector(href);
+                    if (el) {
+                        const r = el.getBoundingClientRect();
+                        link.classList.toggle('active', r.top < 200 && r.bottom > 100);
+                    }
+                }
+            });
+        });
+
+        // ================================================================
+        // INIT
+        // ================================================================
+        switchSubject('social');
+    </script>
+</body>
+
+</html>
