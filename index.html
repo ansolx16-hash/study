@@ -1595,7 +1595,8 @@
         <div class="archive-header">
             <div class="label">The Archive</div>
             <h2>Your <span class="italic">Guides</span></h2>
-            <div class="desc">Curated study materials organized by subject. Attach files, open resources, and build your
+            <div class="desc">Curated study materials organized by subject. Add Google Drive links, open resources, and
+                build your
                 personal study collection.</div>
         </div>
 
@@ -1740,50 +1741,50 @@
         const DEFAULT_GUIDES = {
             social: {
                 name: 'Social Science', icon: '🌍', guides: [
-                    { title: 'Natural Resources And Their Use', desc: 'Complete notes on causes, events, and outcomes.', tags: ['History', 'Ch 1'], date: '2026-06-20', files: { html: null, docx: null, txt: null } },
-                    { title: 'Nazism and the Rise of Hitler', desc: 'Detailed guide covering Hitler\'s rise and WWII.', tags: ['History', 'Ch 3'], date: '2026-06-18', files: { html: null, docx: null, txt: null } },
-                    { title: 'Resources & Development', desc: 'Geography notes on resources and sustainability.', tags: ['Geography', 'Ch 1'], date: '2026-06-15', files: { html: null, docx: null, txt: null } },
-                    { title: 'The Indian Constitution', desc: 'Civics guide on the making of the Constitution.', tags: ['Civics', 'Ch 1'], date: '2026-06-12', files: { html: null, docx: null, txt: null } },
+                    { title: 'Natural Resources And Their Use', desc: 'Complete notes on causes, events, and outcomes.', tags: ['History', 'Ch 1'], date: '2026-06-20', googleDriveLink: '' },
+                    { title: 'Nazism and the Rise of Hitler', desc: 'Detailed guide covering Hitler\'s rise and WWII.', tags: ['History', 'Ch 3'], date: '2026-06-18', googleDriveLink: '' },
+                    { title: 'Resources & Development', desc: 'Geography notes on resources and sustainability.', tags: ['Geography', 'Ch 1'], date: '2026-06-15', googleDriveLink: '' },
+                    { title: 'The Indian Constitution', desc: 'Civics guide on the making of the Constitution.', tags: ['Civics', 'Ch 1'], date: '2026-06-12', googleDriveLink: '' },
                 ]
             },
             english: {
                 name: 'English', icon: '📖', guides: [
-                    { title: 'The Best Christmas Present', desc: 'Summary, themes, and important questions.', tags: ['Prose', 'Ch 1'], date: '2026-06-22', files: { html: null, docx: null, txt: null } },
-                    { title: 'The Tsunami', desc: 'Comprehensive guide with vocabulary and tasks.', tags: ['Prose', 'Ch 2'], date: '2026-06-19', files: { html: null, docx: null, txt: null } },
-                    { title: 'Grammar: Tenses', desc: 'Complete tense guide with practice exercises.', tags: ['Grammar'], date: '2026-06-16', files: { html: null, docx: null, txt: null } },
-                    { title: 'Poem: The Ant and Cricket', desc: 'Poem analysis, moral, and questions.', tags: ['Poetry'], date: '2026-06-13', files: { html: null, docx: null, txt: null } },
+                    { title: 'The Best Christmas Present', desc: 'Summary, themes, and important questions.', tags: ['Prose', 'Ch 1'], date: '2026-06-22', googleDriveLink: '' },
+                    { title: 'The Tsunami', desc: 'Comprehensive guide with vocabulary and tasks.', tags: ['Prose', 'Ch 2'], date: '2026-06-19', googleDriveLink: '' },
+                    { title: 'Grammar: Tenses', desc: 'Complete tense guide with practice exercises.', tags: ['Grammar'], date: '2026-06-16', googleDriveLink: '' },
+                    { title: 'Poem: The Ant and Cricket', desc: 'Poem analysis, moral, and questions.', tags: ['Poetry'], date: '2026-06-13', googleDriveLink: '' },
                 ]
             },
             maths: {
                 name: 'Mathematics', icon: '📐', guides: [
-                    { title: 'Rational Numbers', desc: 'Properties, operations, number line.', tags: ['Ch 1'], date: '2026-06-21', files: { html: null, docx: null, txt: null } },
-                    { title: 'Linear Equations', desc: 'Step-by-step solving methods.', tags: ['Ch 2'], date: '2026-06-17', files: { html: null, docx: null, txt: null } },
-                    { title: 'Quadrilaterals', desc: 'Types, properties, angle calculations.', tags: ['Ch 3', 'Geometry'], date: '2026-06-14', files: { html: null, docx: null, txt: null } },
-                    { title: 'Data Handling', desc: 'Bar graphs, pie charts, probability.', tags: ['Ch 4'], date: '2026-06-10', files: { html: null, docx: null, txt: null } },
+                    { title: 'Rational Numbers', desc: 'Properties, operations, number line.', tags: ['Ch 1'], date: '2026-06-21', googleDriveLink: '' },
+                    { title: 'Linear Equations', desc: 'Step-by-step solving methods.', tags: ['Ch 2'], date: '2026-06-17', googleDriveLink: '' },
+                    { title: 'Quadrilaterals', desc: 'Types, properties, angle calculations.', tags: ['Ch 3', 'Geometry'], date: '2026-06-14', googleDriveLink: '' },
+                    { title: 'Data Handling', desc: 'Bar graphs, pie charts, probability.', tags: ['Ch 4'], date: '2026-06-10', googleDriveLink: '' },
                 ]
             },
             science: {
                 name: 'Science', icon: '🔬', guides: [
-                    { title: 'Crop Production', desc: 'Agricultural practices and harvesting.', tags: ['Biology', 'Ch 1'], date: '2026-06-23', files: { html: null, docx: null, txt: null } },
-                    { title: 'Microorganisms', desc: 'Types of microbes, uses, harmful effects.', tags: ['Biology', 'Ch 2'], date: '2026-06-20', files: { html: null, docx: null, txt: null } },
-                    { title: 'Force and Pressure', desc: 'Types of forces and applications.', tags: ['Physics', 'Ch 11'], date: '2026-06-18', files: { html: null, docx: null, txt: null } },
-                    { title: 'Chemical Effects of Current', desc: 'Electroplating and conductors.', tags: ['Chemistry', 'Ch 14'], date: '2026-06-15', files: { html: null, docx: null, txt: null } },
+                    { title: 'Crop Production', desc: 'Agricultural practices and harvesting.', tags: ['Biology', 'Ch 1'], date: '2026-06-23', googleDriveLink: '' },
+                    { title: 'Microorganisms', desc: 'Types of microbes, uses, harmful effects.', tags: ['Biology', 'Ch 2'], date: '2026-06-20', googleDriveLink: '' },
+                    { title: 'Force and Pressure', desc: 'Types of forces and applications.', tags: ['Physics', 'Ch 11'], date: '2026-06-18', googleDriveLink: '' },
+                    { title: 'Chemical Effects of Current', desc: 'Electroplating and conductors.', tags: ['Chemistry', 'Ch 14'], date: '2026-06-15', googleDriveLink: '' },
                 ]
             },
             malayalam: {
                 name: 'Malayalam', icon: '🖋️', guides: [
-                    { title: 'കേരള പാഠാവലി - പാഠം 1', desc: 'കഥകളുടെ സംഗ്രഹവും ചോദ്യോത്തരങ്ങളും.', tags: ['Prose', 'Ch 1'], date: '2026-06-22', files: { html: null, docx: null, txt: null } },
-                    { title: 'വ്യാകരണം - സന്ധി', desc: 'സന്ധി നിയമങ്ങളും ഉദാഹരണങ്ങളും.', tags: ['Grammar'], date: '2026-06-19', files: { html: null, docx: null, txt: null } },
-                    { title: 'കവിത - മണ്ണിന്റെ പാട്ട്', desc: 'കവിതയുടെ വ്യാഖ്യാനവും ആശയങ്ങളും.', tags: ['Poetry'], date: '2026-06-16', files: { html: null, docx: null, txt: null } },
-                    { title: 'ശൈലികൾ', desc: 'പ്രധാന ശൈലികളും അർത്ഥവും ഉപയോഗവും.', tags: ['Language'], date: '2026-06-13', files: { html: null, docx: null, txt: null } },
+                    { title: 'കേരള പാഠാവലി - പാഠം 1', desc: 'കഥകളുടെ സംഗ്രഹവും ചോദ്യോത്തരങ്ങളും.', tags: ['Prose', 'Ch 1'], date: '2026-06-22', googleDriveLink: '' },
+                    { title: 'വ്യാകരണം - സന്ധി', desc: 'സന്ധി നിയമങ്ങളും ഉദാഹരണങ്ങളും.', tags: ['Grammar'], date: '2026-06-19', googleDriveLink: '' },
+                    { title: 'കവിത - മണ്ണിന്റെ പാട്ട്', desc: 'കവിതയുടെ വ്യാഖ്യാനവും ആശയങ്ങളും.', tags: ['Poetry'], date: '2026-06-16', googleDriveLink: '' },
+                    { title: 'ശൈലികൾ', desc: 'പ്രധാന ശൈലികളും അർത്ഥവും ഉപയോഗവും.', tags: ['Language'], date: '2026-06-13', googleDriveLink: '' },
                 ]
             },
             hindi: {
                 name: 'Hindi', icon: '🇮🇳', guides: [
-                    { title: 'ध्वनि - पाठ 1', desc: 'कविता का सारांश और प्रश्नोत्तर।', tags: ['Poetry', 'Ch 1'], date: '2026-06-21', files: { html: null, docx: null, txt: null } },
-                    { title: 'लाख की चूड़ियाँ', desc: 'कहानी का विश्लेषण और अभ्यास।', tags: ['Prose', 'Ch 2'], date: '2026-06-18', files: { html: null, docx: null, txt: null } },
-                    { title: 'व्याकरण - संज्ञा', desc: 'संज्ञा के भेद और उदाहरण।', tags: ['Grammar'], date: '2026-06-15', files: { html: null, docx: null, txt: null } },
-                    { title: 'वाच्य परिवर्तन', desc: 'कर्तृवाच्य, कर्मवाच्य, भाववाच्य।', tags: ['Grammar'], date: '2026-06-12', files: { html: null, docx: null, txt: null } },
+                    { title: 'ध्वनि - पाठ 1', desc: 'कविता का सारांश और प्रश्नोत्तर।', tags: ['Poetry', 'Ch 1'], date: '2026-06-21', googleDriveLink: '' },
+                    { title: 'लाख की चूड़ियाँ', desc: 'कहानी का विश्लेषण और अभ्यास।', tags: ['Prose', 'Ch 2'], date: '2026-06-18', googleDriveLink: '' },
+                    { title: 'व्याकरण - संज्ञा', desc: 'संज्ञा के भेद और उदाहरण।', tags: ['Grammar'], date: '2026-06-15', googleDriveLink: '' },
+                    { title: 'वाच्य परिवर्तन', desc: 'कर्तृवाच्य, कर्मवाच्य, भाववाच्य।', tags: ['Grammar'], date: '2026-06-12', googleDriveLink: '' },
                 ]
             },
         };
@@ -1791,10 +1792,10 @@
         // Load from localStorage or use defaults
         function loadGuides() {
             try {
-                const saved = localStorage.getItem('sv_guides_meta');
+                const saved = localStorage.getItem('sv_guides_data');
                 if (saved) {
                     const parsed = JSON.parse(saved);
-                    // Merge saved metadata with defaults — keep saved if exists
+                    // Merge saved data with defaults — keep saved if exists
                     const result = {};
                     for (const [key, sub] of Object.entries(DEFAULT_GUIDES)) {
                         if (parsed[key]) {
@@ -1820,65 +1821,27 @@
                 result[key] = {
                     name: sub.name,
                     icon: sub.icon,
-                    guides: sub.guides.map(g => ({ ...g, files: { html: null, docx: null, txt: null } }))
+                    guides: sub.guides.map(g => ({ ...g }))
                 };
             }
             return result;
         }
 
-        function saveGuidesMeta() {
-            // Save only metadata (titles, descs, tags, dates) — NOT file data
-            const meta = {};
+        function saveGuidesData() {
+            const data = {};
             for (const [key, sub] of Object.entries(GUIDES)) {
-                meta[key] = sub.guides.map(g => ({
+                data[key] = sub.guides.map(g => ({
                     title: g.title,
                     desc: g.desc,
                     tags: g.tags,
-                    date: g.date
+                    date: g.date,
+                    googleDriveLink: g.googleDriveLink || ''
                 }));
             }
-            localStorage.setItem('sv_guides_meta', JSON.stringify(meta));
+            localStorage.setItem('sv_guides_data', JSON.stringify(data));
         }
 
         let GUIDES = loadGuides();
-
-        // Migrate old single-file attachments to new multi-format files
-        function migrateFiles() {
-            for (const [s, sub] of Object.entries(GUIDES)) {
-                sub.guides.forEach((g, i) => {
-                    if (!g.files) g.files = { html: null, docx: null, txt: null };
-                    // Migrate old single-file key
-                    const oldKey = 'sv_file_' + s + '_' + i;
-                    try {
-                        const d = localStorage.getItem(oldKey);
-                        if (d) {
-                            const parsed = JSON.parse(d);
-                            if (parsed && parsed.name) {
-                                // Guess format from file extension
-                                const name = parsed.name.toLowerCase();
-                                if (name.endsWith('.html') || name.endsWith('.htm')) g.files.html = parsed;
-                                else if (name.endsWith('.docx') || name.endsWith('.doc')) g.files.docx = parsed;
-                                else if (name.endsWith('.txt')) g.files.txt = parsed;
-                                else g.files.txt = parsed; // fallback
-                                localStorage.removeItem(oldKey); // clean up
-                            }
-                        }
-                    } catch (e) { /* skip */ }
-                    // Load per-format keys
-                    ['html', 'docx', 'txt'].forEach(fmt => {
-                        const fk = 'sv_f_' + s + '_' + i + '_' + fmt;
-                        try {
-                            const d = localStorage.getItem(fk);
-                            if (d) {
-                                const parsed = JSON.parse(d);
-                                if (parsed && parsed.name) g.files[fmt] = parsed;
-                            }
-                        } catch (e) { /* skip */ }
-                    });
-                });
-            }
-        }
-        migrateFiles();
 
         // ================================================================
         // RENDER
@@ -1892,15 +1855,11 @@
                 panel.innerHTML = '<div class="empty-state"><div class="empty-state-text">No guides yet.</div></div>';
                 return;
             }
-            const FORMAT_ICONS = { html: '🌐', docx: '📄', txt: '📃' };
-            const FORMAT_LABELS = { html: 'HTML', docx: 'DOCX', txt: 'TXT' };
             sub.guides.forEach((g, i) => {
-                if (!g.files) g.files = { html: null, docx: null, txt: null };
-                const anyFile = !!(g.files.html || g.files.docx || g.files.txt);
-                const formatBadges = ['html', 'docx', 'txt'].map(fmt =>
-                    '<span class="guide-format-badge ' + (g.files[fmt] ? 'available' : 'missing') + '">' + FORMAT_ICONS[fmt] + ' ' + FORMAT_LABELS[fmt] + '</span>'
-                ).join('');
-                const fileNames = ['html', 'docx', 'txt'].filter(f => g.files[f]).map(f => g.files[f].name).join(', ');
+                const hasLink = !!(g.googleDriveLink && g.googleDriveLink.trim());
+                const linkBadge = hasLink
+                    ? '<span class="guide-format-badge available">🔗 Google Drive</span>'
+                    : '<span class="guide-format-badge missing">🔗 No Link</span>';
                 const c = document.createElement('div');
                 c.className = 'guide-card';
                 c.dataset.subject = id; c.dataset.index = i;
@@ -1909,16 +1868,16 @@
                     '<div class="guide-card-title">' + g.title + '</div>' +
                     '<div class="guide-card-desc">' + g.desc + '</div>' +
                     '<div class="guide-card-tags">' + g.tags.map(t => '<span class="guide-tag">' + t + '</span>').join('') + '</div>' +
-                    '<div class="guide-format-badges">' + formatBadges + '</div>' +
+                    '<div class="guide-format-badges">' + linkBadge + '</div>' +
                     '<div class="guide-card-meta">' +
                     '<span class="guide-date">' + g.date + '</span>' +
                     '<div class="guide-actions">' +
-                    '<button class="guide-action-btn open-btn" data-action="open"' + (anyFile ? '' : ' style="display:none"') + '>Open</button>' +
-                    '<button class="guide-action-btn replace-btn" data-action="replace">Upload</button>' +
-                    '<button class="guide-action-btn remove-btn" data-action="remove"' + (anyFile ? '' : ' style="display:none"') + '>Remove</button>' +
+                    '<button class="guide-action-btn open-btn" data-action="open"' + (hasLink ? '' : ' style="display:none"') + '>Open</button>' +
+                    '<button class="guide-action-btn replace-btn" data-action="replace">Link</button>' +
+                    '<button class="guide-action-btn remove-btn" data-action="remove"' + (hasLink ? '' : ' style="display:none"') + '>Remove</button>' +
                     '</div>' +
                     '</div>' +
-                    '<div class="guide-file-status' + (anyFile ? ' has-file' : '') + '">' + (anyFile ? '📎 ' + fileNames : 'No files attached') + '</div>';
+                    '<div class="guide-file-status' + (hasLink ? ' has-file' : '') + '">' + (hasLink ? '🔗 Google Drive link set' : 'No Google Drive link') + '</div>';
                 c.querySelectorAll('.guide-action-btn').forEach(btn => {
                     btn.addEventListener('click', e => {
                         e.stopPropagation();
@@ -1935,30 +1894,9 @@
             });
             const add = document.createElement('div');
             add.className = 'add-card';
-            add.innerHTML = '<div class="add-card-plus">+</div><div class="add-card-text">Add Guide</div><div class="add-card-sub">Attach a file to this subject</div>';
+            add.innerHTML = '<div class="add-card-plus">+</div><div class="add-card-text">Add Guide</div><div class="add-card-sub">Add a new guide with Google Drive link</div>';
             add.onclick = () => showPasswordPrompt(() => openAddModal(id));
             panel.appendChild(add);
-        }
-
-        // ================================================================
-        // FILE HELPERS — open data-url blob in new tab
-        // ================================================================
-        function openFileData(fileData) {
-            if (!fileData || !fileData.data) return false;
-            try {
-                const b64 = (fileData.data.split(',')[1] || fileData.data);
-                const bytes = atob(b64);
-                const arr = new Uint8Array(bytes.length);
-                for (let k = 0; k < bytes.length; k++) arr[k] = bytes.charCodeAt(k);
-                const blob = new Blob([arr], { type: fileData.type || 'application/octet-stream' });
-                const url = URL.createObjectURL(blob);
-                window.open(url, '_blank');
-                setTimeout(() => URL.revokeObjectURL(url), 60000);
-                return true;
-            } catch (e) {
-                if (fileData.data.startsWith('data:')) { window.open(fileData.data, '_blank'); return true; }
-                return false;
-            }
         }
 
         // ================================================================
@@ -1966,101 +1904,44 @@
         // ================================================================
         function handleOpen(s, i) {
             const g = GUIDES[s].guides[i];
-            if (!g.files) g.files = { html: null, docx: null, txt: null };
-            const hasHtml = !!g.files.html;
-            const hasDocx = !!g.files.docx;
-            const hasTxt = !!g.files.txt;
-            const anyAvailable = hasHtml || hasDocx || hasTxt;
-
-            if (!anyAvailable) {
-                showNotification('No files attached to this guide.');
+            const link = (g.googleDriveLink || '').trim();
+            if (!link) {
+                showNotification('No Google Drive link set for this guide.');
                 return;
             }
-
-            openModal(`
-                <button class="modal-close" onclick="closeModal()">✕</button>
-                <div class="modal-title">📂 Choose Format</div>
-                <div class="modal-sub">${g.title}</div>
-                <div class="format-picker">
-                    ${hasHtml ? '<a class="format-picker-btn" href="#" onclick="event.preventDefault(); closeModal(); openSpecificFile(\'' + s + '\',' + i + ',\'html\')"><span><span class="format-label">🌐 HTML File</span><br><span class="format-ext">' + g.files.html.name + '</span></span><span class="format-arrow">→</span></a>' :
-                    '<div class="format-picker-btn unavailable"><span><span class="format-label">🌐 HTML File</span><br><span class="format-ext">Not uploaded</span></span></div>'}
-                    ${hasDocx ? '<a class="format-picker-btn" href="#" onclick="event.preventDefault(); closeModal(); openSpecificFile(\'' + s + '\',' + i + ',\'docx\')"><span><span class="format-label">📄 DOCX File</span><br><span class="format-ext">' + g.files.docx.name + '</span></span><span class="format-arrow">→</span></a>' :
-                    '<div class="format-picker-btn unavailable"><span><span class="format-label">📄 DOCX File</span><br><span class="format-ext">Not uploaded</span></span></div>'}
-                    ${hasTxt ? '<a class="format-picker-btn" href="#" onclick="event.preventDefault(); closeModal(); openSpecificFile(\'' + s + '\',' + i + ',\'txt\')"><span><span class="format-label">📃 TXT File</span><br><span class="format-ext">' + g.files.txt.name + '</span></span><span class="format-arrow">→</span></a>' :
-                    '<div class="format-picker-btn unavailable"><span><span class="format-label">📃 TXT File</span><br><span class="format-ext">Not uploaded</span></span></div>'}
-                </div>
-                <div class="modal-actions">
-                    <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Cancel</button>
-                </div>
-            `);
-        }
-
-        function openSpecificFile(s, i, fmt) {
-            const g = GUIDES[s].guides[i];
-            if (!g.files) g.files = { html: null, docx: null, txt: null };
-            if (g.files[fmt]) {
-                if (!openFileData(g.files[fmt])) {
-                    showNotification('Could not open file. Re-attach it.');
-                }
-            } else {
-                showNotification(fmt.toUpperCase() + ' version not available for this guide.');
-            }
+            window.open(link, '_blank');
         }
 
         function handleReplace(s, i) {
             showPasswordPrompt(() => {
                 const g = GUIDES[s].guides[i];
-                if (!g.files) g.files = { html: null, docx: null, txt: null };
-                const fmtNames = { html: '🌐 HTML (.html)', docx: '📄 DOCX (.docx)', txt: '📃 TXT (.txt)' };
-                const fmtAccepts = { html: '.html,.htm', docx: '.docx,.doc', txt: '.txt' };
-
+                const currentLink = g.googleDriveLink || '';
                 openModal(`
                     <button class="modal-close" onclick="closeModal()">✕</button>
-                    <div class="modal-title">📎 Upload Files</div>
+                    <div class="modal-title">🔗 Google Drive Link</div>
                     <div class="modal-sub">${g.title}</div>
-                    <div class="format-attach-group">
-                        ${['html', 'docx', 'txt'].map(fmt => `
-                            <div style="flex:1;min-width:140px;margin-bottom:8px;">
-                                <label style="display:block;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink-60);margin-bottom:4px;">${fmtNames[fmt]}</label>
-                                <button class="format-attach-btn ${g.files[fmt] ? 'attached' : ''}" id="fmtBtn_${fmt}" onclick="uploadFormat('${s}',${i},'${fmt}')">${g.files[fmt] ? '✅ Attached' : 'Upload'}</button>
-                                <div class="format-attach-name" id="fmtName_${fmt}">${g.files[fmt] ? g.files[fmt].name : '—'}</div>
-                            </div>
-                        `).join('')}
+                    <div class="modal-field">
+                        <label>Google Drive Link</label>
+                        <input type="url" id="driveLinkInput" placeholder="https://drive.google.com/..." value="${currentLink}" style="width:100%;padding:10px 14px;font-size:14px;font-family:var(--sans);background:var(--card-bg);border:1px solid var(--ink-12);border-radius:4px;color:var(--ink);outline:none;box-sizing:border-box;" />
                     </div>
                     <div class="modal-actions">
-                        <button class="modal-btn modal-btn-secondary" onclick="closeModal(); renderSubject('${s}')">Done</button>
+                        <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Cancel</button>
+                        <button class="modal-btn modal-btn-primary" id="saveDriveLink">Save Link</button>
                     </div>
                 `);
+                document.getElementById('saveDriveLink').addEventListener('click', () => {
+                    const link = document.getElementById('driveLinkInput').value.trim();
+                    GUIDES[s].guides[i].googleDriveLink = link;
+                    saveGuidesData();
+                    renderSubject(s);
+                    closeModal();
+                    showNotification(link ? '🔗 Google Drive link saved' : '🗑️ Google Drive link removed');
+                });
+                setTimeout(() => document.getElementById('driveLinkInput').focus(), 100);
             });
         }
 
-        function uploadFormat(s, i, fmt) {
-            const inp = document.createElement('input'); inp.type = 'file';
-            const accepts = { html: '.html,.htm', docx: '.docx,.doc', txt: '.txt' };
-            inp.accept = accepts[fmt];
-            inp.onchange = e => {
-                const file = e.target.files[0]; if (!file) return;
-                const reader = new FileReader();
-                reader.onload = ev => {
-                    const data = { name: file.name, type: file.type, size: file.size, data: ev.target.result };
-                    const g = GUIDES[s].guides[i];
-                    if (!g.files) g.files = { html: null, docx: null, txt: null };
-                    g.files[fmt] = data;
-                    saveFormatFile(s, i, fmt, data);
-                    // Update button in the modal
-                    const btn = document.getElementById('fmtBtn_' + fmt);
-                    if (btn) { btn.textContent = '✅ Attached'; btn.classList.add('attached'); }
-                    const nameEl = document.getElementById('fmtName_' + fmt);
-                    if (nameEl) nameEl.textContent = file.name;
-                    showNotification('📎 ' + file.name + ' uploaded');
-                };
-                reader.readAsDataURL(file);
-            };
-            inp.click();
-        }
-
         function handleRemove(s, i) {
-            // Ask for password before removing guide completely
             showPasswordPrompt(() => {
                 const g = GUIDES[s].guides[i];
                 showRemoveConfirm(s, i, g.title);
@@ -2079,23 +1960,12 @@
                 </div>
             `);
             document.getElementById('removeConfirm').addEventListener('click', () => {
-                // Clear all format files
-                ['html', 'docx', 'txt'].forEach(fmt => saveFormatFile(s, i, fmt, null));
                 GUIDES[s].guides.splice(i, 1);
-                saveGuidesMeta();
+                saveGuidesData();
                 renderSubject(s);
                 closeModal();
                 showNotification('🗑️ Guide removed from ' + GUIDES[s].name);
             });
-        }
-
-        // ================================================================
-        // STORAGE UTILITIES (for per-format file data)
-        // ================================================================
-        function getFormatKey(s, i, fmt) { return 'sv_f_' + s + '_' + i + '_' + fmt; }
-        function saveFormatFile(s, i, fmt, data) {
-            const key = getFormatKey(s, i, fmt);
-            data ? localStorage.setItem(key, JSON.stringify(data)) : localStorage.removeItem(key);
         }
 
         // ================================================================
@@ -2119,21 +1989,8 @@
                     <textarea id="addDesc" placeholder="Brief description of this guide..."></textarea>
                 </div>
                 <div class="modal-field">
-                    <label>Upload Files (optional)</label>
-                    <div class="format-attach-group">
-                        <div style="flex:1;min-width:120px;margin-bottom:6px;">
-                            <label style="display:block;font-size:9px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--ink-50);margin-bottom:2px;">🌐 HTML</label>
-                            <input type="file" id="addFileHtml" accept=".html,.htm" style="font-size:11px;padding:4px 0;border:none;background:none;width:100%;" />
-                        </div>
-                        <div style="flex:1;min-width:120px;margin-bottom:6px;">
-                            <label style="display:block;font-size:9px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--ink-50);margin-bottom:2px;">📄 DOCX</label>
-                            <input type="file" id="addFileDocx" accept=".docx,.doc" style="font-size:11px;padding:4px 0;border:none;background:none;width:100%;" />
-                        </div>
-                        <div style="flex:1;min-width:120px;margin-bottom:6px;">
-                            <label style="display:block;font-size:9px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--ink-50);margin-bottom:2px;">📃 TXT</label>
-                            <input type="file" id="addFileTxt" accept=".txt" style="font-size:11px;padding:4px 0;border:none;background:none;width:100%;" />
-                        </div>
-                    </div>
+                    <label>Google Drive Link (optional)</label>
+                    <input type="url" id="addDriveLink" placeholder="https://drive.google.com/file/d/..." />
                 </div>
                 <div class="modal-actions">
                     <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Cancel</button>
@@ -2144,15 +2001,7 @@
             setTimeout(() => document.getElementById('addTitle').focus(), 100);
         }
 
-        function readFileAsDataPromise(file) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onload = ev => resolve({ name: file.name, type: file.type, size: file.size, data: ev.target.result });
-                reader.readAsDataURL(file);
-            });
-        }
-
-        async function submitAddGuide(id) {
+        function submitAddGuide(id) {
             const title = document.getElementById('addTitle').value.trim();
             if (!title) {
                 showNotification('⚠️ Please enter a guide name.');
@@ -2161,33 +2010,17 @@
             }
             const desc = document.getElementById('addDesc').value.trim() || 'No description provided.';
             const date = document.getElementById('addDate').value || new Date().toISOString().split('T')[0];
+            const googleDriveLink = document.getElementById('addDriveLink').value.trim() || '';
 
-            const htmlFile = document.getElementById('addFileHtml').files[0];
-            const docxFile = document.getElementById('addFileDocx').files[0];
-            const txtFile = document.getElementById('addFileTxt').files[0];
-
-            const files = { html: null, docx: null, txt: null };
-            const readTasks = [];
-
-            if (htmlFile) readTasks.push(readFileAsDataPromise(htmlFile).then(d => files.html = d));
-            if (docxFile) readTasks.push(readFileAsDataPromise(docxFile).then(d => files.docx = d));
-            if (txtFile) readTasks.push(readFileAsDataPromise(txtFile).then(d => files.txt = d));
-
-            await Promise.all(readTasks);
-
-            const idx = GUIDES[id].guides.length;
             GUIDES[id].guides.push({
                 title: title,
                 desc: desc,
                 tags: ['Uploaded'],
                 date: date,
-                files: files
+                googleDriveLink: googleDriveLink
             });
 
-            ['html', 'docx', 'txt'].forEach(fmt => {
-                if (files[fmt]) saveFormatFile(id, idx, fmt, files[fmt]);
-            });
-            saveGuidesMeta();
+            saveGuidesData();
             renderSubject(id);
             closeModal();
             showNotification('✅ "' + title + '" added to ' + GUIDES[id].name);
